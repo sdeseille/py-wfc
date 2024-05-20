@@ -7,7 +7,7 @@ import pprint
 tiles = {
     'M': {'left': ['M', 'L'], 'right': ['M', 'L'], 'top': ['M', 'L'], 'bottom': ['M', 'L']},
     'L': {'left': ['L', 'M'], 'right': ['L', 'M', 'C'], 'top': ['L', 'M'], 'bottom': ['L', 'M', 'C']},
-    'C': {'left': ['B', 'C'], 'right': ['B', 'C'], 'top': ['C'], 'bottom': ['C']},
+    'C': {'left': ['L', 'C'], 'right': ['L', 'C'], 'top': ['C'], 'bottom': ['C']},
     'S': {'left': ['S', 'C'], 'right': ['S', 'C'], 'top': ['S', 'C'], 'bottom': ['S', 'C']}
 }
 
@@ -44,14 +44,16 @@ def propagate(nx, ny, direction):
         neighbor_possible_states = grid[ny][nx]
         compatible_states = tiles[chosen_state][direction]
         grid[ny][nx] = [state for state in neighbor_possible_states if state in compatible_states]
+    else:
+        print(f'Propagation impossible for direction {direction}')
 
-propagate(x - 1, y, 'right')  # Left neighbor
-propagate(x + 1, y, 'left')   # Right neighbor
-propagate(x, y - 1, 'bottom') # Top neighbor
-propagate(x, y + 1, 'top')    # Bottom neighbor
+propagate(x + 1, y, 'right')  # Left neighbor
+propagate(x - 1, y, 'left')   # Right neighbor
+propagate(x, y + 1, 'bottom') # Top neighbor
+propagate(x, y - 1, 'top')    # Bottom neighbor
 
 pprint.pprint(nextgrid)
 
 # Step 7: Display the final grid
-for row in nextgrid:
+for row in grid:
     print(' '.join(row[0] for row in row))
